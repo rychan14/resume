@@ -15,11 +15,9 @@ import Html
   , strong
   , text
   )
-
 import Html.Attributes exposing (style)
 
-
-resume =
+resumeContainer =
   style []
 
 sectionContainer = 
@@ -52,7 +50,7 @@ description =
 
 view : model -> Html msg
 view model =
-  div [ resume ]
+  div [ resumeContainer ]
     [ section [ sectionContainer ]
       [ h2 [ sectionHeading ]
         [ text "Experience" ]

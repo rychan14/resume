@@ -9071,14 +9071,14 @@ var _rychan14$resume$Resume_View$sectionHeading = _elm_lang$html$Html_Attributes
 	{ctor: '[]'});
 var _rychan14$resume$Resume_View$sectionContainer = _elm_lang$html$Html_Attributes$style(
 	{ctor: '[]'});
-var _rychan14$resume$Resume_View$resume = _elm_lang$html$Html_Attributes$style(
+var _rychan14$resume$Resume_View$resumeContainer = _elm_lang$html$Html_Attributes$style(
 	{ctor: '[]'});
 var _rychan14$resume$Resume_View$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
 			ctor: '::',
-			_0: _rychan14$resume$Resume_View$resume,
+			_0: _rychan14$resume$Resume_View$resumeContainer,
 			_1: {ctor: '[]'}
 		},
 		{
