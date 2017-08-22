@@ -6,9 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "elm-reactor",
-    "start": "chokidar \"src/**/*.elm\" -c \"elm make src/App.elm --output src/index.js\"",
-    "//": "concurrently \"npm run build\" \"npm run css\"",
-    "/": "chokidar \"src/**/Styles.elm\" -c \"elm-css src/Styles/Stylesheets.elm"
+    "build": "chokidar \"src/**/*.elm\" -c \"elm make src/App.elm --output build/index.js\"",
+    "start": "concurrently \"npm run build\" \"npm run css\"",
+    "css": "chokidar \"src/**/Styles.elm\" -c \"elm-css src/Styles/Stylesheets.elm"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
     "elm": "^0.18.0"
   },
   "dependencies": {
+    "elm-css": "^0.6.1",
     "elm-github-install": "^1.4.0"
   }
 }
