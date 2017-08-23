@@ -1,94 +1,60 @@
 module Resume.View exposing (view)
 
 import Html
-  exposing 
-  ( Html
-  , Attribute
-  , div
-  , h1
-  , h2
-  , h3
-  , p
-  , span
-  , br
-  , section
-  , strong
-  , text
-  )
-import Html.Attributes exposing (style)
+import Element exposing (..)
+import Element.Attributes exposing (..)
+import Types exposing (..)
 
-resumeContainer =
-  style []
-
-sectionContainer = 
-  style []
-
-sectionHeading = 
-  style []
-
-sectionBlock =
-  style []
-
-sectionBlockHeading =
-  style []
-
-blockHeading =
-  style []
-
-blockHeadingBold =
-  style []
-
-blockHeadingItalic =
-  style []
-
-blockHeadingSecondary =
-  style []
-
-description =
-  style
+view _ =
+  column None
     []
+    ( List.concat
+      [ experienceSection
+      , skillsSection
+      , educationSection
+      ]
+    )
 
-view : model -> Html msg
-view model =
-  div [ resumeContainer ]
-    [ section [ sectionContainer ]
-      [ h2 [ sectionHeading ]
-        [ text "Experience" ]
-      , div [ sectionBlock ]
-        [ h3 [ sectionBlockHeading ]
-          [ span [ blockHeadingBold ]
-            [ text "Mirum Agency, " ]
-          , span [ blockHeading ]
-            [ text "San Diego -- " ]
-          , span [ blockHeadingItalic ]
-            [ text "Web Developer" ]
-          ]
-        , p [ blockHeadingSecondary ]
-          [ text "August 2015 - Present" ]
-        , p [ description ]
-          []
+experienceSection =
+  [ section <| column None []
+    [ node "h2" <| el SectionTitle [] (text "Experience")
+    , column None []
+      [ node "h3" <| paragraph None [] 
+        [ (text "Mirum Agency, ")
+        , (text "San Diego -- ")
+        , (text "Web Developer")
         ]
-      , div [ sectionBlock ]
-        [ h3 [ sectionBlockHeading ]
-          [ span [ blockHeadingBold ]
-            [ text "BofI Federal Bank, " ]
-          , span [ blockHeading ]
-            [ text "San Diego -- " ]
-          , span [ blockHeadingItalic ]
-            [ text "Web Developer" ]
-          ]
-        , p [ blockHeadingSecondary ]
-          [ text "August 2015 - Present" ]
-        , p [ description ]
-          []
+      , paragraph None []
+        [ (text "August 2015 - Present")
+        ]
+      , paragraph None []
+        [ (text "description")
         ]
       ]
-    , section [ sectionContainer ]
-      [ h2 []
-        [ text "Skills" ]
-      ]
-    , section [ sectionContainer ]
-      [ h2 []
-        [ text "Education" ]
+    , column None []
+      [ node "h3" <| paragraph None [] 
+        [ (text "BofI Federal Bank, ")
+        , (text "San Diego -- ")
+        , (text "Web Developer")
+        ]
+      , paragraph None []
+        [ (text "September 2014 - August 2015")
+        ]
+      , paragraph None []
+        [ (text "description")
+        ]
       ]
     ]
+  ]
+
+skillsSection =
+  [ section <| column None []
+    [ node "h2" <| el None [] (text "Skills")
+    ]
+  ]
+
+educationSection =
+  [ section <| column None []
+    [ node "h2" <| el None [] (text "Education")
+    ]
+  ]
