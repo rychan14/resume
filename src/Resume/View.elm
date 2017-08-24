@@ -3,7 +3,7 @@ module Resume.View exposing (view)
 import Html
 import Element exposing (..)
 import Element.Attributes exposing (..)
-import Types exposing (..)
+import Resume.Types as StyleTypes exposing (..)
 
 view _ =
   column None

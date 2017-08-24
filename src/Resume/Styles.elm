@@ -4,7 +4,10 @@ import Color exposing (rgba)
 import Style exposing (..)
 import Style.Border as Border
 import Style.Color as Color
-import Types exposing (..)
+import Resume.Types exposing (..)
+
+type Styles
+  = SectionTitle
 
 colors =
   { lightCyan = rgba 224 255 255 1

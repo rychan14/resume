@@ -1,4 +1,5 @@
 module Resume.Types exposing (..)
 
-type Styles
-  = SectionTitle
+type ResumeStyles
+  = None
+  | SectionTitle
