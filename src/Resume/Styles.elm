@@ -1,19 +1,24 @@
 module Resume.Styles exposing (..)
 
-import Color exposing (rgba)
-import Style exposing (..)
-import Style.Border as Border
-import Style.Color as Color
-import Resume.Types exposing (..)
+import Styles exposing (..)
+import Types exposing (..)
 
-type Styles
+type Class
   = SectionTitle
+  | ResumeWrapper
 
-colors =
-  { lightCyan = rgba 224 255 255 1
-  }
+resumeStyles =
+  [ { selectors = [ Class SectionTitle ]
+    , props = 
+      [ ("font-family", "Verdana")
+      , ("color", "#333")
+      ]
+    } 
+  ]
 
-styles =
-  style SectionTitle 
-    [ Color.text colors.lightCyan
-    ]
+styleRecord =
+  Styles.styleRecord resumeStyles
+
+resumeStyleNode =
+  Styles.styles styleRecord
+

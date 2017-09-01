@@ -1,22 +1,56 @@
 module Styles exposing (..)
 
-import Color exposing (rgba)
-import Style exposing (..)
-import Style.Border as Border
-import Style.Color as Color
--- import Types exposing (Styles)
-import Resume.Styles exposing (styles)
+import Html
+import Html.Attributes
+import Murmur3 exposing (hashString)
+import String exposing (concat, cons, join)
+import Types exposing (..)
 
-type Styles
-  = None
-  | Main
-  | SectionTitle
-  | Resume.Types.ResumeStyles
+hash value =
+  value 
+    |> hashString 1234
+    |> toString
 
-stylesheet : StyleSheet Styles variation
-stylesheet =
-  Style.stylesheet
-    [ style None []
-    , style Main []
-    , Resume.Styles.styles
+selector : Selector id cls -> Props -> String
+selector selector ruleProps =
+  case selector of 
+    Type element -> element
+    Id id -> id 
+      |> toString 
+      |> cons '#'
+    Class cls -> cls 
+      |> toString 
+      |> cons '-'
+      |> String.append (hash (props ruleProps))
+      |> cons '.'
+
+props : Props -> String 
+props =
+  concat << List.map (\(key, value) -> concat [ key, ":", value, ";" ])
+
+rule : Rule id cls -> String
+rule rule =
+  concat 
+    [ join "," (List.map2 selector rule.selectors [rule.props])
+    , "{"
+    , props rule.props
+    , "}"
     ]
+
+styleRecord : List (Rule id cls) -> StyleRecord id cls msg
+styleRecord rules =
+  { node = 
+    List.map rule rules
+      |> concat
+      |> Html.text
+  , id = Html.Attributes.id << toString
+  , class =
+    toString 
+      >> String.append (toString (Debug.log "value" rules))
+--      >> String.append (join "," (List.map (\rule -> concat (List.map2 selector rule.selectors [rule.props])) rules))
+      >> Html.Attributes.class
+  }
+
+styles : StyleRecord id cls msg -> Html.Html msg 
+styles styleRecord =
+  Html.node "style" [] [ styleRecord.node ]

@@ -1,60 +1,67 @@
 module Resume.View exposing (view)
 
-import Html
-import Element exposing (..)
-import Element.Attributes exposing (..)
-import Resume.Types as StyleTypes exposing (..)
+import Html 
+  exposing 
+    ( section
+    , div
+    , h2
+    , h3
+    , p
+    , text
+    )
+import Resume.Styles exposing (..)
+import Types exposing (..)
 
 view _ =
-  column None
-    []
-    ( List.concat
-      [ experienceSection
-      , skillsSection
-      , educationSection
-      ]
-    )
+  div [ styleRecord.class ResumeWrapper ]
+    [ experienceSection
+    , skillsSection
+    , educationSection
+    ]
 
 experienceSection =
-  [ section <| column None []
-    [ node "h2" <| el SectionTitle [] (text "Experience")
-    , column None []
-      [ node "h3" <| paragraph None [] 
-        [ (text "Mirum Agency, ")
-        , (text "San Diego -- ")
-        , (text "Web Developer")
+  section []
+    [ h2 [ styleRecord.class SectionTitle ] 
+      [ text "Experience"
+      ]
+    , div []
+      [ h3 [] 
+        [ text "Mirum Agency, "
+        , text "San Diego -- "
+        , text "Web Developer"
         ]
-      , paragraph None []
-        [ (text "August 2015 - Present")
+      , p []
+        [ text "August 2015 - Present"
         ]
-      , paragraph None []
-        [ (text "description")
+      , p []
+        [ text "description"
         ]
       ]
-    , column None []
-      [ node "h3" <| paragraph None [] 
-        [ (text "BofI Federal Bank, ")
-        , (text "San Diego -- ")
-        , (text "Web Developer")
+    , div []
+      [ h3 [] 
+        [ text "BofI Federal Bank, "
+        , text "San Diego -- "
+        , text "Web Developer"
         ]
-      , paragraph None []
-        [ (text "September 2014 - August 2015")
+      , p []
+        [ text "September 2014 - August 2015"
         ]
-      , paragraph None []
-        [ (text "description")
+      , p []
+        [ text "description"
         ]
       ]
     ]
-  ]
 
 skillsSection =
-  [ section <| column None []
-    [ node "h2" <| el None [] (text "Skills")
+  section []
+    [ h2 [] 
+      [ text "Skills"
+      ]
     ]
-  ]
 
 educationSection =
-  [ section <| column None []
-    [ node "h2" <| el None [] (text "Education")
+  section []
+    [ h2 [] 
+      [ text "Education"
+      ]
     ]
-  ]

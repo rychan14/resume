@@ -8,50 +8,37 @@ import Html
   , h1
   , p
   , span
-  , br
   , strong
+  , section
   , text
   )
-
-import Html.Attributes exposing (style)
-
-headerStyle =
-  style []
-
-headingStyle : Attribute msg
-headingStyle =
-  style 
-    [ ("margin-bottom", "0")
-    ]
-
-descriptionStyle =
-  style []
-
-contactStyle =
-  style []
-
-contactLineStyle =
-  style 
-    [ ("display", "block") 
-    ]
+import Header.Styles exposing (..)
+import Types exposing (..)
+import Components exposing (button)
 
 view : model -> Html msg
 view model =
-  div [ headerStyle ]
-    [ div [] 
-      [ h1 [ headingStyle ] 
-        [ text "Ryan Chan" ]
-      , p [ descriptionStyle ] 
-        [ text "I am a dev by trade and an audio geek" ]
-      ]
-    , p [ contactStyle ] 
-      [ span [ contactLineStyle ]
-        [ text "Currently residing in" ]
-      , strong [ contactLineStyle ]
-        [ text "Spokane, WA 99208" ]
-      , span [ contactLineStyle ] 
-        [ text "Email me at" ]
-      , strong [ contactLineStyle ]
-        [ text "rychan14@gmail.com" ]
+  section [ styleRecord.class Wrapper ]
+    [ div []
+      [ h1 [ styleRecord.class Name ]
+        [ text "RCHAN" ]
+      , button 
+        [ styleRecord.class Button ]
+        ("/")
+        [ text "DEV." ]
+      , button 
+        [ styleRecord.class Button ]
+        ("/")
+        [ text "AUDIO." ]
+      , p []
+        [ span []
+          [ text "Currently residing in" ]
+        , strong []
+          [ text "Spokane, WA 99208" ]
+        , span []
+          [ text "Email me at" ]
+        , strong []
+          [ text "rychan14@gmail.com" ]
+        ]
       ]
     ]
