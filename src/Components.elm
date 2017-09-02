@@ -7,7 +7,7 @@ import Html
   )
 import Html.Attributes
 import Types exposing (..)
-import Styles exposing (styles, styleRecord)
+import Styles exposing (..)
 import Colors exposing (themes)
 
 type Class
@@ -31,14 +31,7 @@ button attributes url innerContent =
   a 
     ( List.append 
       [ Html.Attributes.href url
-      , styleRecord.class Button
       ]
       attributes
     )
     innerContent
-
-styleRecord =
-  Styles.styleRecord buttonStyles
-
-componentsStyleNode =
-  Styles.styles styleRecord

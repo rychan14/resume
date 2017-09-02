@@ -8,9 +8,7 @@ import Styles exposing (..)
 import Types exposing (..)
 import Components exposing (..)
 import Header.View as Header exposing (view)
-import Header.Styles exposing (..)
 import Resume.View as Resume exposing (view)
-import Resume.Styles exposing (..)
 
 init : ( Model, Cmd Msg )
 init = (0, Cmd.none)
@@ -20,23 +18,11 @@ update msg model =
   case msg of 
     KeyMsg code -> (code, Cmd.none)
 
-styleNodes = 
-  [ headerStyleNode
-  , resumeStyleNode
-  , componentsStyleNode
-  ]
-
-viewNodes model =
-  [ ( Resume.view model )
-  ]
-
 view model =
   div []
-    ( List.concat 
-      [ styleNodes
-      , viewNodes model
-      ]
-    )
+    [ Header.view model 
+    , Resume.view model 
+    ]
 
 subscriptions : Model -> Sub Msg
 subscriptions model = 

@@ -9,19 +9,28 @@ import Html
     , p
     , text
     )
-import Resume.Styles exposing (..)
+import Html.Attributes
 import Types exposing (..)
+import Styles exposing (..)
+import VirtualDom exposing (style)
 
 view _ =
-  div [ styleRecord.class ResumeWrapper ]
-    [ experienceSection
-    , skillsSection
-    , educationSection
-    ]
+  styled 
+    div 
+      [ ("color", "red")
+      , ("background-color", "black")
+      ]
+      [ Html.Attributes.title "black" ]
+      [ text "hello" ]
+--   div [ styleRecord.class ResumeWrapper ]
+--     [ experienceSection
+--     , skillsSection
+--     , educationSection
+--     ]
 
 experienceSection =
   section []
-    [ h2 [ styleRecord.class SectionTitle ] 
+    [ h2 [] 
       [ text "Experience"
       ]
     , div []

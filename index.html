@@ -6,4 +6,7 @@
 <script>
   var node = document.getElementById("main")
   var app = Elm.App.embed(node)
+  app.ports.css.subscribe(css => {
+    document.head.appendChild(css)
+  })
 </script>

@@ -9009,127 +9009,94 @@ var _rychan14$resume$Types$KeyMsg = function (a) {
 	return {ctor: 'KeyMsg', _0: a};
 };
 
-var _rychan14$resume$Styles$styles = function (styleRecord) {
-	return A3(
-		_elm_lang$html$Html$node,
-		'style',
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: styleRecord.node,
-			_1: {ctor: '[]'}
-		});
-};
-var _rychan14$resume$Styles$props = function (_p0) {
-	return _elm_lang$core$String$concat(
-		A2(
-			_elm_lang$core$List$map,
-			function (_p1) {
-				var _p2 = _p1;
-				return _elm_lang$core$String$concat(
-					{
-						ctor: '::',
-						_0: _p2._0,
-						_1: {
-							ctor: '::',
-							_0: ':',
-							_1: {
-								ctor: '::',
-								_0: _p2._1,
-								_1: {
-									ctor: '::',
-									_0: ';',
-									_1: {ctor: '[]'}
-								}
-							}
-						}
-					});
-			},
-			_p0));
-};
-var _rychan14$resume$Styles$hash = function (value) {
-	return _elm_lang$core$Basics$toString(
-		A2(_Skinney$murmur3$Murmur3$hashString, 1234, value));
-};
-var _rychan14$resume$Styles$selector = F2(
-	function (selector, ruleProps) {
-		var _p3 = selector;
-		switch (_p3.ctor) {
-			case 'Type':
-				return _p3._0;
-			case 'Id':
-				return A2(
-					_elm_lang$core$String$cons,
-					_elm_lang$core$Native_Utils.chr('#'),
-					_elm_lang$core$Basics$toString(_p3._0));
-			default:
-				return A2(
-					_elm_lang$core$String$cons,
-					_elm_lang$core$Native_Utils.chr('.'),
-					A2(
-						_elm_lang$core$String$append,
-						_rychan14$resume$Styles$hash(
-							_rychan14$resume$Styles$props(ruleProps)),
-						A2(
-							_elm_lang$core$String$cons,
-							_elm_lang$core$Native_Utils.chr('-'),
-							_elm_lang$core$Basics$toString(_p3._0))));
-		}
-	});
-var _rychan14$resume$Styles$rule = function (rule) {
+var _rychan14$resume$Styles$createCssRules = function (rules) {
 	return _elm_lang$core$String$concat(
 		{
 			ctor: '::',
-			_0: A2(
-				_elm_lang$core$String$join,
-				',',
-				A3(
-					_elm_lang$core$List$map2,
-					_rychan14$resume$Styles$selector,
-					rule.selectors,
-					{
-						ctor: '::',
-						_0: rule.props,
-						_1: {ctor: '[]'}
-					})),
+			_0: '{',
 			_1: {
 				ctor: '::',
-				_0: '{',
+				_0: _elm_lang$core$String$concat(
+					A2(
+						_elm_lang$core$List$map,
+						function (_p0) {
+							var _p1 = _p0;
+							return _elm_lang$core$String$concat(
+								{
+									ctor: '::',
+									_0: _p1._0,
+									_1: {
+										ctor: '::',
+										_0: ':',
+										_1: {
+											ctor: '::',
+											_0: _p1._1,
+											_1: {
+												ctor: '::',
+												_0: ';',
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								});
+						},
+						rules)),
 				_1: {
 					ctor: '::',
-					_0: _rychan14$resume$Styles$props(rule.props),
-					_1: {
-						ctor: '::',
-						_0: '}',
-						_1: {ctor: '[]'}
-					}
+					_0: '}',
+					_1: {ctor: '[]'}
 				}
 			}
 		});
 };
-var _rychan14$resume$Styles$styleRecord = function (rules) {
-	return {
-		node: _elm_lang$html$Html$text(
-			_elm_lang$core$String$concat(
-				A2(_elm_lang$core$List$map, _rychan14$resume$Styles$rule, rules))),
-		id: function (_p4) {
-			return _elm_lang$html$Html_Attributes$id(
-				_elm_lang$core$Basics$toString(_p4));
-		},
-		$class: function (_p5) {
-			return _elm_lang$html$Html_Attributes$class(
-				A2(
-					_elm_lang$core$String$append,
-					_elm_lang$core$Basics$toString(
-						A2(_elm_lang$core$Debug$log, 'value', rules)),
-					_elm_lang$core$Basics$toString(_p5)));
-		}
-	};
+var _rychan14$resume$Styles$hash = function (value) {
+	return _elm_lang$core$Basics$toString(
+		A2(
+			_Skinney$murmur3$Murmur3$hashString,
+			1234,
+			_elm_lang$core$Basics$toString(value)));
 };
+var _rychan14$resume$Styles$styled = F4(
+	function (node, rules, properties, children) {
+		var className = A2(
+			_elm_lang$core$Basics_ops['++'],
+			'class',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'-',
+				_rychan14$resume$Styles$hash(rules)));
+		var classNameProperty = _elm_lang$html$Html_Attributes$class(className);
+		var nodeWithClassName = A2(
+			node,
+			{ctor: '::', _0: classNameProperty, _1: properties},
+			children);
+		var css = A2(
+			_elm_lang$core$Basics_ops['++'],
+			'.',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				className,
+				_rychan14$resume$Styles$createCssRules(rules)));
+		return nodeWithClassName;
+	});
 
 var _rychan14$resume$Colors$colors = {orange: '#ffa07a', black: '#222'};
 var _rychan14$resume$Colors$themes = {primary: _rychan14$resume$Colors$colors.orange, secondary: _rychan14$resume$Colors$colors.black};
 
+var _rychan14$resume$Components$button = F3(
+	function (attributes, url, innerContent) {
+		return A2(
+			_elm_lang$html$Html$a,
+			A2(
+				_elm_lang$core$List$append,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$href(url),
+					_1: {ctor: '[]'}
+				},
+				attributes),
+			innerContent);
+	});
 var _rychan14$resume$Components$Button = {ctor: 'Button'};
 var _rychan14$resume$Components$buttonStyles = {
 	ctor: '::',
@@ -9175,251 +9142,28 @@ var _rychan14$resume$Components$buttonStyles = {
 	},
 	_1: {ctor: '[]'}
 };
-var _rychan14$resume$Components$styleRecord = _rychan14$resume$Styles$styleRecord(_rychan14$resume$Components$buttonStyles);
-var _rychan14$resume$Components$componentsStyleNode = _rychan14$resume$Styles$styles(_rychan14$resume$Components$styleRecord);
-var _rychan14$resume$Components$button = F3(
-	function (attributes, url, innerContent) {
-		return A2(
-			_elm_lang$html$Html$a,
-			A2(
-				_elm_lang$core$List$append,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$href(url),
-					_1: {
-						ctor: '::',
-						_0: _rychan14$resume$Components$styleRecord.$class(_rychan14$resume$Components$Button),
-						_1: {ctor: '[]'}
-					}
-				},
-				attributes),
-			innerContent);
-	});
-
-var _rychan14$resume$Header_Styles$Button = {ctor: 'Button'};
-var _rychan14$resume$Header_Styles$Wrapper = {ctor: 'Wrapper'};
-var _rychan14$resume$Header_Styles$Name = {ctor: 'Name'};
-var _rychan14$resume$Header_Styles$headerStyles = {
-	ctor: '::',
-	_0: {
-		selectors: {
-			ctor: '::',
-			_0: _rychan14$resume$Types$Class(_rychan14$resume$Header_Styles$Name),
-			_1: {ctor: '[]'}
-		},
-		props: {
-			ctor: '::',
-			_0: {ctor: '_Tuple2', _0: 'font-size', _1: '100px'},
-			_1: {
-				ctor: '::',
-				_0: {ctor: '_Tuple2', _0: 'font-weight', _1: 'bold'},
-				_1: {ctor: '[]'}
-			}
-		}
-	},
-	_1: {
-		ctor: '::',
-		_0: {
-			selectors: {
-				ctor: '::',
-				_0: _rychan14$resume$Types$Class(_rychan14$resume$Header_Styles$Wrapper),
-				_1: {ctor: '[]'}
-			},
-			props: {
-				ctor: '::',
-				_0: {ctor: '_Tuple2', _0: 'align-items', _1: 'center'},
-				_1: {
-					ctor: '::',
-					_0: {ctor: '_Tuple2', _0: 'background-color', _1: _rychan14$resume$Colors$themes.secondary},
-					_1: {
-						ctor: '::',
-						_0: {ctor: '_Tuple2', _0: 'color', _1: _rychan14$resume$Colors$themes.primary},
-						_1: {
-							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 'display', _1: 'flex'},
-							_1: {
-								ctor: '::',
-								_0: {ctor: '_Tuple2', _0: 'font-family', _1: 'Verdana'},
-								_1: {
-									ctor: '::',
-									_0: {ctor: '_Tuple2', _0: 'height', _1: '80vh'},
-									_1: {
-										ctor: '::',
-										_0: {ctor: '_Tuple2', _0: 'justify-content', _1: 'center'},
-										_1: {
-											ctor: '::',
-											_0: {ctor: '_Tuple2', _0: 'text-align', _1: 'center'},
-											_1: {ctor: '[]'}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		_1: {
-			ctor: '::',
-			_0: {
-				selectors: {
-					ctor: '::',
-					_0: _rychan14$resume$Types$Class(_rychan14$resume$Header_Styles$Button),
-					_1: {ctor: '[]'}
-				},
-				props: {
-					ctor: '::',
-					_0: {ctor: '_Tuple2', _0: 'font-size', _1: '25px'},
-					_1: {ctor: '[]'}
-				}
-			},
-			_1: {ctor: '[]'}
-		}
-	}
-};
-var _rychan14$resume$Header_Styles$styleRecord = _rychan14$resume$Styles$styleRecord(_rychan14$resume$Header_Styles$headerStyles);
-var _rychan14$resume$Header_Styles$headerStyleNode = _rychan14$resume$Styles$styles(_rychan14$resume$Header_Styles$styleRecord);
 
 var _rychan14$resume$Header_View$view = function (model) {
-	return A2(
+	return A4(
+		_rychan14$resume$Styles$styled,
 		_elm_lang$html$Html$section,
+		{ctor: '[]'},
+		{ctor: '[]'},
 		{
 			ctor: '::',
-			_0: _rychan14$resume$Header_Styles$styleRecord.$class(_rychan14$resume$Header_Styles$Wrapper),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: A2(
+			_0: A4(
+				_rychan14$resume$Styles$styled,
 				_elm_lang$html$Html$div,
+				{ctor: '[]'},
 				{ctor: '[]'},
 				{
 					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$h1,
-						{
-							ctor: '::',
-							_0: _rychan14$resume$Header_Styles$styleRecord.$class(_rychan14$resume$Header_Styles$Name),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('RCHAN'),
-							_1: {ctor: '[]'}
-						}),
-					_1: {
-						ctor: '::',
-						_0: A3(
-							_rychan14$resume$Components$button,
-							{
-								ctor: '::',
-								_0: _rychan14$resume$Header_Styles$styleRecord.$class(_rychan14$resume$Header_Styles$Button),
-								_1: {ctor: '[]'}
-							},
-							'/',
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html$text('DEV.'),
-								_1: {ctor: '[]'}
-							}),
-						_1: {
-							ctor: '::',
-							_0: A3(
-								_rychan14$resume$Components$button,
-								{
-									ctor: '::',
-									_0: _rychan14$resume$Header_Styles$styleRecord.$class(_rychan14$resume$Header_Styles$Button),
-									_1: {ctor: '[]'}
-								},
-								'/',
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text('AUDIO.'),
-									_1: {ctor: '[]'}
-								}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$p,
-									{ctor: '[]'},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$span,
-											{ctor: '[]'},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text('Currently residing in'),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$strong,
-												{ctor: '[]'},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text('Spokane, WA 99208'),
-													_1: {ctor: '[]'}
-												}),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$span,
-													{ctor: '[]'},
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html$text('Email me at'),
-														_1: {ctor: '[]'}
-													}),
-												_1: {
-													ctor: '::',
-													_0: A2(
-														_elm_lang$html$Html$strong,
-														{ctor: '[]'},
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html$text('rychan14@gmail.com'),
-															_1: {ctor: '[]'}
-														}),
-													_1: {ctor: '[]'}
-												}
-											}
-										}
-									}),
-								_1: {ctor: '[]'}
-							}
-						}
-					}
+					_0: _elm_lang$html$Html$text('hello'),
+					_1: {ctor: '[]'}
 				}),
 			_1: {ctor: '[]'}
 		});
 };
-
-var _rychan14$resume$Resume_Styles$ResumeWrapper = {ctor: 'ResumeWrapper'};
-var _rychan14$resume$Resume_Styles$SectionTitle = {ctor: 'SectionTitle'};
-var _rychan14$resume$Resume_Styles$resumeStyles = {
-	ctor: '::',
-	_0: {
-		selectors: {
-			ctor: '::',
-			_0: _rychan14$resume$Types$Class(_rychan14$resume$Resume_Styles$SectionTitle),
-			_1: {ctor: '[]'}
-		},
-		props: {
-			ctor: '::',
-			_0: {ctor: '_Tuple2', _0: 'font-family', _1: 'Verdana'},
-			_1: {
-				ctor: '::',
-				_0: {ctor: '_Tuple2', _0: 'color', _1: '#333'},
-				_1: {ctor: '[]'}
-			}
-		}
-	},
-	_1: {ctor: '[]'}
-};
-var _rychan14$resume$Resume_Styles$styleRecord = _rychan14$resume$Styles$styleRecord(_rychan14$resume$Resume_Styles$resumeStyles);
-var _rychan14$resume$Resume_Styles$resumeStyleNode = _rychan14$resume$Styles$styles(_rychan14$resume$Resume_Styles$styleRecord);
 
 var _rychan14$resume$Resume_View$educationSection = A2(
 	_elm_lang$html$Html$section,
@@ -9458,11 +9202,7 @@ var _rychan14$resume$Resume_View$experienceSection = A2(
 		ctor: '::',
 		_0: A2(
 			_elm_lang$html$Html$h2,
-			{
-				ctor: '::',
-				_0: _rychan14$resume$Resume_Styles$styleRecord.$class(_rychan14$resume$Resume_Styles$SectionTitle),
-				_1: {ctor: '[]'}
-			},
+			{ctor: '[]'},
 			{
 				ctor: '::',
 				_0: _elm_lang$html$Html$text('Experience'),
@@ -9567,25 +9307,27 @@ var _rychan14$resume$Resume_View$experienceSection = A2(
 		}
 	});
 var _rychan14$resume$Resume_View$view = function (_p0) {
-	return A2(
+	return A4(
+		_rychan14$resume$Styles$styled,
 		_elm_lang$html$Html$div,
 		{
 			ctor: '::',
-			_0: _rychan14$resume$Resume_Styles$styleRecord.$class(_rychan14$resume$Resume_Styles$ResumeWrapper),
+			_0: {ctor: '_Tuple2', _0: 'color', _1: 'red'},
+			_1: {
+				ctor: '::',
+				_0: {ctor: '_Tuple2', _0: 'background-color', _1: 'black'},
+				_1: {ctor: '[]'}
+			}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$title('black'),
 			_1: {ctor: '[]'}
 		},
 		{
 			ctor: '::',
-			_0: _rychan14$resume$Resume_View$experienceSection,
-			_1: {
-				ctor: '::',
-				_0: _rychan14$resume$Resume_View$skillsSection,
-				_1: {
-					ctor: '::',
-					_0: _rychan14$resume$Resume_View$educationSection,
-					_1: {ctor: '[]'}
-				}
-			}
+			_0: _elm_lang$html$Html$text('hello'),
+			_1: {ctor: '[]'}
 		});
 };
 
@@ -9597,40 +9339,19 @@ var _rychan14$resume$App$subscriptions = function (model) {
 			_1: {ctor: '[]'}
 		});
 };
-var _rychan14$resume$App$viewNodes = function (model) {
-	return {
-		ctor: '::',
-		_0: _rychan14$resume$Resume_View$view(model),
-		_1: {ctor: '[]'}
-	};
-};
-var _rychan14$resume$App$styleNodes = {
-	ctor: '::',
-	_0: _rychan14$resume$Header_Styles$headerStyleNode,
-	_1: {
-		ctor: '::',
-		_0: _rychan14$resume$Resume_Styles$resumeStyleNode,
-		_1: {
-			ctor: '::',
-			_0: _rychan14$resume$Components$componentsStyleNode,
-			_1: {ctor: '[]'}
-		}
-	}
-};
 var _rychan14$resume$App$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{ctor: '[]'},
-		_elm_lang$core$List$concat(
-			{
+		{
+			ctor: '::',
+			_0: _rychan14$resume$Header_View$view(model),
+			_1: {
 				ctor: '::',
-				_0: _rychan14$resume$App$styleNodes,
-				_1: {
-					ctor: '::',
-					_0: _rychan14$resume$App$viewNodes(model),
-					_1: {ctor: '[]'}
-				}
-			}));
+				_0: _rychan14$resume$Resume_View$view(model),
+				_1: {ctor: '[]'}
+			}
+		});
 };
 var _rychan14$resume$App$update = F2(
 	function (msg, model) {
