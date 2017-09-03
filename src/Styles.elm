@@ -37,6 +37,9 @@ styled node rules properties children =
             "."
             ++ className 
             ++ createCssRules rules
+
+          styleNode =
+            Html.node "style" [] [ Html.text css ]
       in
           -- [ nodeWithClassName, Html.node "style" [] [ Html.text css ] ]
           nodeWithClassName

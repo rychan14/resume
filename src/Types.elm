@@ -24,7 +24,13 @@ type alias StyleRecord id cls msg =
   }
 
 type alias Model =
-  Int
+  { code: Int
+  , css: String
+  }
+
+type alias Css =
+  String
 
 type Msg 
   = KeyMsg Keyboard.KeyCode
+  | CssMsg Css

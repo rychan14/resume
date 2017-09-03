@@ -8996,6 +8996,10 @@ var _rychan14$resume$Types$StyleRecord = F3(
 	function (a, b, c) {
 		return {node: a, id: b, $class: c};
 	});
+var _rychan14$resume$Types$Model = F2(
+	function (a, b) {
+		return {code: a, css: b};
+	});
 var _rychan14$resume$Types$Class = function (a) {
 	return {ctor: 'Class', _0: a};
 };
@@ -9004,6 +9008,9 @@ var _rychan14$resume$Types$Id = function (a) {
 };
 var _rychan14$resume$Types$Type = function (a) {
 	return {ctor: 'Type', _0: a};
+};
+var _rychan14$resume$Types$CssMsg = function (a) {
+	return {ctor: 'CssMsg', _0: a};
 };
 var _rychan14$resume$Types$KeyMsg = function (a) {
 	return {ctor: 'KeyMsg', _0: a};
@@ -9077,6 +9084,15 @@ var _rychan14$resume$Styles$styled = F4(
 				_elm_lang$core$Basics_ops['++'],
 				className,
 				_rychan14$resume$Styles$createCssRules(rules)));
+		var styleNode = A3(
+			_elm_lang$html$Html$node,
+			'style',
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(css),
+				_1: {ctor: '[]'}
+			});
 		return nodeWithClassName;
 	});
 
@@ -9356,9 +9372,29 @@ var _rychan14$resume$App$view = function (model) {
 var _rychan14$resume$App$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
-		return {ctor: '_Tuple2', _0: _p0._0, _1: _elm_lang$core$Platform_Cmd$none};
+		if (_p0.ctor === 'KeyMsg') {
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Native_Utils.update(
+					model,
+					{code: _p0._0}),
+				_1: _elm_lang$core$Platform_Cmd$none
+			};
+		} else {
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Native_Utils.update(
+					model,
+					{css: _p0._0}),
+				_1: _elm_lang$core$Platform_Cmd$none
+			};
+		}
 	});
-var _rychan14$resume$App$init = {ctor: '_Tuple2', _0: 0, _1: _elm_lang$core$Platform_Cmd$none};
+var _rychan14$resume$App$init = {
+	ctor: '_Tuple2',
+	_0: {code: 0, css: ''},
+	_1: _elm_lang$core$Platform_Cmd$none
+};
 var _rychan14$resume$App$main = _elm_lang$html$Html$program(
 	{init: _rychan14$resume$App$init, update: _rychan14$resume$App$update, view: _rychan14$resume$App$view, subscriptions: _rychan14$resume$App$subscriptions})();
 

@@ -11,12 +11,24 @@ import Header.View as Header exposing (view)
 import Resume.View as Resume exposing (view)
 
 init : ( Model, Cmd Msg )
-init = (0, Cmd.none)
+init = ( { code = 0
+         , css = "" 
+         }
+       , Cmd.none
+       )
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model = 
   case msg of 
-    KeyMsg code -> (code, Cmd.none)
+    KeyMsg code -> 
+      ( { model | code = code }
+      , Cmd.none
+      )
+
+    CssMsg css -> 
+      ( { model | css = css }
+      , Cmd.none
+      )
 
 view model =
   div []
