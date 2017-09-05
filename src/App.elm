@@ -37,10 +37,10 @@ type alias Model =
   }
 
 type Msg 
-  = Mdl (Material.Msg Msg)
-  | KeyMsg Keyboard.KeyCode
+  = KeyMsg Keyboard.KeyCode
   | ResizeMsg {height: Int, width: Int}
   | ColorMsg String
+  | Mdl (Material.Msg Msg)
 
 getInitialWindowDimensions : Cmd Msg
 getInitialWindowDimensions =
@@ -49,8 +49,8 @@ getInitialWindowDimensions =
 init : ( Model, Cmd Msg )
 init = 
   ( { code = 0
-    , height = 0
     , mdl = Material.model
+    , height = 0
     , width = 0
     , color = "default"
     }
@@ -72,8 +72,8 @@ update msg model =
       ({ model | color = color}
       , Cmd.none
       )
-    Mdl msg' ->
-      Material.update msg' model
+    Mdl msg_ ->
+      Material.update Mdl msg_ model
 
 subscriptions : Model -> Sub Msg
 subscriptions model = 
@@ -82,7 +82,6 @@ subscriptions model =
     , Window.resizes ResizeMsg
     ]
 
-main : Program Never
 main =
   Html.program 
     { init = init
