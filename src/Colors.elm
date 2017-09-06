@@ -1,17 +1,42 @@
 module Colors exposing (..)
 
+import Dict
+import Color exposing (rgb)
+
 colors =
-  { orange = "#ffa500"
-  , black = "#000"
-  , marine = "#1b2b34"
-  , white = "#FFF"
-  , yellow = "#FAC863"
-  , blue = "#9bc2cf"
+  { orange = "rgb(255, 165, 0)"
+  , black = "rgb(0, 0, 0)"
+  , marine = "rgb(27, 43, 52)"
+  , white = "rgb(255, 255, 255)"
+  , yellow = "rgb(250, 200, 99)"
+  , blue = "rgb(155, 194, 207)"
+  , red = "rgb(236, 95, 103)"
   }
 
-themes =
+defaultTheme =
   { primary = colors.white
-  , secondary = colors.orange
+  , secondary = colors.marine
+  , tertiary = colors.orange
   , text = colors.marine
   , title = colors.blue
   }
+
+themes =
+  Dict.fromList
+    [ ( "light"
+      , { primary = colors.white
+        , secondary = colors.marine
+        , tertiary = colors.orange
+        , text = colors.marine
+        , title = colors.blue
+        }
+      ) 
+    , ( "dark"
+      , { primary = colors.marine
+        , secondary = colors.orange
+        , tertiary = colors.yellow
+        , text = colors.white
+        , title = colors.red
+        }
+      )
+    ]

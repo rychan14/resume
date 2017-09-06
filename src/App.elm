@@ -14,33 +14,41 @@ import Html
   , text
   , ul
   )
+import Html.Attributes exposing (style)
+import Html.Events exposing (onClick)
+import Dict
+import Maybe
 import Keyboard
 import Task
 import Window
-import Material
-import Material.Scheme
-import Html.Attributes exposing (style)
-import Colors exposing (themes)
+import Animation
+import Color exposing (rgb)
+import Colors exposing (..)
 
 (=>) : a -> b -> (a, b)
 (=>) = (,)
 
-type alias Mdl
-  = Material.Model
-
 type alias Model =
   { code : Int
-  , mdl: Material.Model
   , height : Int
   , width : Int
-  , color: String
+  , theme : String
+  , style : Animation.State
   }
 
 type Msg 
   = KeyMsg Keyboard.KeyCode
   | ResizeMsg {height: Int, width: Int}
-  | ColorMsg String
-  | Mdl (Material.Msg Msg)
+  | ThemeMsg String
+  | AnimateMsg Animation.Msg
+
+type ThemingMsg 
+  = Primary
+  | Secondary
+  | Tertiary
+  | Title
+  | Text
+
 
 getInitialWindowDimensions : Cmd Msg
 getInitialWindowDimensions =
@@ -49,10 +57,13 @@ getInitialWindowDimensions =
 init : ( Model, Cmd Msg )
 init = 
   ( { code = 0
-    , mdl = Material.model
     , height = 0
     , width = 0
-    , color = "default"
+    , theme = "theme1"
+    , style =
+      Animation.style
+        [ Animation.backgroundColor (rgb 255 255 255)
+        ] 
     }
   , getInitialWindowDimensions
   )
@@ -65,21 +76,32 @@ update msg model =
       , Cmd.none
       )
     ResizeMsg { height, width } ->
-      ({ model | height = height, width = width}
+      ( { model | height = height, width = width}
       , Cmd.none
       )
-    ColorMsg color ->
-      ({ model | color = color}
+    ThemeMsg theme ->
+      ( { model | 
+          theme = theme,
+          style = Animation.interrupt
+            [ Animation.to
+              [ Animation.backgroundColor (if theme == "light" then rgb 255 255 255 else rgb 27 43 52)
+              ]
+            ]
+            model.style
+        }
       , Cmd.none
       )
-    Mdl msg_ ->
-      Material.update Mdl msg_ model
+    AnimateMsg msg ->
+      ( { model | style = Animation.update msg model.style }
+      , Cmd.none
+      )
 
 subscriptions : Model -> Sub Msg
 subscriptions model = 
   Sub.batch
     [ Keyboard.downs KeyMsg
     , Window.resizes ResizeMsg
+    , Animation.subscription AnimateMsg [ model.style ]
     ]
 
 main =
@@ -93,28 +115,70 @@ main =
 
 
 
+-- HELPERS
+
+bigOrSmall model list1 list2 =
+  if model.width > 1100 then
+    list1
+  else 
+    list2
+
+theming : Model -> ThemingMsg -> String
+theming model msg =
+  case msg of 
+    Primary ->
+      .primary <| Maybe.withDefault defaultTheme <| Dict.get model.theme themes
+    Secondary ->
+      .secondary <| Maybe.withDefault defaultTheme <| Dict.get model.theme themes
+    Tertiary ->
+      .tertiary <| Maybe.withDefault defaultTheme <| Dict.get model.theme themes
+    Title ->
+      .title <| Maybe.withDefault defaultTheme <| Dict.get model.theme themes
+    Text ->
+      .text <| Maybe.withDefault defaultTheme <| Dict.get model.theme themes
+
+buttonTheming : String -> ThemingMsg -> String
+buttonTheming themeType msg =
+  case msg of 
+    Primary ->
+      .primary <| Maybe.withDefault defaultTheme <| Dict.get (String.toLower themeType) themes
+    Secondary ->
+      .secondary <| Maybe.withDefault defaultTheme <| Dict.get (String.toLower themeType) themes
+    Tertiary ->
+      .tertiary <| Maybe.withDefault defaultTheme <| Dict.get (String.toLower themeType) themes
+    Title ->
+      .title <| Maybe.withDefault defaultTheme <| Dict.get (String.toLower themeType) themes
+    Text ->
+      .text <| Maybe.withDefault defaultTheme <| Dict.get themeType themes
 
 
 -- VIEW
+
 view model =
   div 
     (bigOrSmall model 
-      [ style
-        [ ("background-color" => themes.primary)
-        , ("color" => themes.text)
-        , ("min-height" => "100vh")
-        , ("font-family" => "Verdana")
-        , ("display" => "grid")
-        , ("grid-template-columns" => "15% minmax(auto, 800px)")
+      ( Animation.render model.style
+      ++  [ style
+            [ ("color" => (theming model Text))
+            , ("font-family" => "Verdana")
+            , ("display" => "grid")
+            , ("grid-template-columns" => "15% minmax(auto, 800px)")
+            , ("min-height" => "100vh")
+            , ("padding" => "20px")
+            ]
+          ]
+      )
+      ( List.concat
+        [ Animation.render model.style
+        , [ style
+            [ ("color" => (theming model Text))
+            , ("font-family" => "Verdana")
+            , ("min-height" => "100vh")
+            , ("padding" => "5px")
+            ]
+          ]
         ]
-      ] 
-      [ style
-        [ ("background-color" => themes.primary)
-        , ("color" => themes.text)
-        , ("min-height" => "100vh")
-        , ("font-family" => "Verdana")
-        ]
-      ]
+      )
     )
     (bigOrSmall model 
       [ leftBar model
@@ -123,18 +187,12 @@ view model =
       [ resumeView model
       ]
     )
-    |> Material.Scheme.top
-
-bigOrSmall model list1 list2 =
-  if model.width > 900 then
-    list1
-  else 
-    list2
 
 leftBar model =
   div 
     [ style 
-      [ ("border-right" => String.append "1px solid " themes.secondary )
+      [ ("border-right" => "1px solid ")
+      , ("border-color" => (theming model Tertiary))
       , ("display" => "flex")
       , ("justify-content" => "center")
       , ("padding" => "35px 8px")
@@ -167,38 +225,39 @@ resumeView model =
       ] 
     ]
     [ nameSection model
-    , experienceSection
-    , expertiseSection
-    , educationSection
+    , experienceSection model 
+    , expertiseSection model
+    , educationSection model
+    , buttonContainer model
     ]
+
+contactInfo =
+  div []
+    [ p []
+      [ span [ style block ]
+        [ text "Currently residing in "
+        , strong [ concatStyles [ inlineBlock, boldText ] ]
+          [ text "Spokane, WA 99208" ]
+        ]
+      , span [ style block ]
+        [ text "Email me at " 
+        , strong [ concatStyles [ inlineBlock, boldText ] ]
+          [ text "rychan14@gmail.com" ]
+        ]
+      ]
+    ]
+
 
 nameSection model =
-  section [ style name ]
-    [ h1 []
+  section []
+    [ h1 [ style name ]
       [ text "Ryan Chan" ]
-    , ( if model.width < 900 then
-        div []
-          [ p []
-            [ span [ style block ]
-              [ text "Currently residing in "
-              , strong [ concatStyles [ inlineBlock, boldText ] ]
-                [ text "Spokane, WA 99208" ]
-              ]
-            , span [ style block ]
-              [ text "Email me at " 
-              , strong [ concatStyles [ inlineBlock, boldText ] ]
-                [ text "rychan14@gmail.com" ]
-              ]
-            ]
-          ]
-        else
-          text ""
-      )
+    , ( bigOrSmall model (text "") contactInfo)
     ]
 
-experienceSection =
+experienceSection model =
   section []
-    [ h2 [ style sectionTitle ]
+    [ h2 [ style << sectionTitle <| model ]
       [ text "Experience"
       ]
     , ul []
@@ -209,7 +268,7 @@ experienceSection =
           [ text "San Diego -- " ]
         , span [ style [("font-style" => "italic")] ]
           [ text "Web Developer" ]
-        , p [] 
+        , p []
           [ text "August 2015 - Present" 
           , ul [ style bulletPoint ]
             [ li []
@@ -231,7 +290,7 @@ experienceSection =
           [ text "San Diego -- " ]
         , span [ style [("font-style" => "italic")] ]
           [ text "Web Developer" ]
-        , p [] 
+        , p []
           [ text "September 2014 - August 2015"
           , ul [ style bulletPoint ]
             [ li []
@@ -255,9 +314,9 @@ experienceSection =
       ]
     ]
 
-expertiseSection =
+expertiseSection model =
   section []
-    [ h2 [ style sectionTitle ]
+    [ h2 [ style << sectionTitle <| model ]
       [ text "Expertise"
       ]
     , ul [ style bulletPoint ]
@@ -279,9 +338,9 @@ expertiseSection =
       ]
     ]
 
-educationSection =
+educationSection model =
   section []
-    [ h2 [ style sectionTitle ]
+    [ h2 [ style << sectionTitle <| model ]
       [ text "Education"
       ]
     , span [ style boldText ] 
@@ -293,7 +352,19 @@ educationSection =
       ]
     ]
 
+buttonContainer model =
+  div 
+    [ style buttonContainerStyle ]
+    [ themeButton "Light"
+    , themeButton "Dark"
+    ]
 
+themeButton themeType =
+  div 
+    [ style <| buttonStyle themeType
+    , onClick << ThemeMsg <| String.toLower <| themeType
+    ]
+    [ text themeType ]
 
 
 -- STYLES
@@ -306,12 +377,15 @@ boldText =
 
 bulletPoint =
   [ ("list-style" => "circle")
+  , ("line-height" => "24px")
+  , ("letter-spacing" => "0")
   , ("margin-left" => "25px")
   ]
 
-sectionTitle =
-  [ ("color" => themes.title)
+sectionTitle model =
+  [ ("color" => (theming model Title))
   , ("font-size" => "25px")
+  , ("line-height" => "48px")
   , ("margin" => "0px")
   ]
 
@@ -334,5 +408,26 @@ overflowEllip =
   ]
 
 name =
-  [ ("font-size" => "28px")
+  [ ("font-size" => "56px")
+  , ("line-height" => "1.35")
+  , ("letter-spacing" => "-.02em")
+  , ("margin" => "0 0 24px 0")
+  ] 
+  
+buttonContainerStyle =
+  [ ("display" => "grid")
+  , ("grid-template-columns" => "min-content min-content")
+  , ("grid-column-gap" => "20px")
+  , ("margin-top" => "15px")
+  ]
+
+buttonStyle themeType =
+  [ ("background-color" => (buttonTheming themeType Primary))
+  , ("border" => "1px solid")
+  , ("border-color" => (buttonTheming themeType Title))
+  , ("border-radius" => "3px")
+  , ("color" => (buttonTheming themeType Title))
+  , ("cursor" => "pointer")
+  , ("display" => "inline-block")
+  , ("padding" => "5px 10px")
   ]
