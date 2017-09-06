@@ -14979,6 +14979,11 @@ var _rychan14$resume$App$boldText = {
 	_0: A2(_rychan14$resume$App_ops['=>'], 'font-weight', 'bold'),
 	_1: {ctor: '[]'}
 };
+var _rychan14$resume$App$noBullet = {
+	ctor: '::',
+	_0: A2(_rychan14$resume$App_ops['=>'], 'list-style', 'none'),
+	_1: {ctor: '[]'}
+};
 var _rychan14$resume$App$bulletPoint = {
 	ctor: '::',
 	_0: A2(_rychan14$resume$App_ops['=>'], 'list-style', 'circle'),
@@ -15287,7 +15292,11 @@ var _rychan14$resume$App$experienceSection = function (model) {
 						ctor: '::',
 						_0: A2(
 							_elm_lang$html$Html$li,
-							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$style(_rychan14$resume$App$noBullet),
+								_1: {ctor: '[]'}
+							},
 							{
 								ctor: '::',
 								_0: A2(
@@ -15399,7 +15408,11 @@ var _rychan14$resume$App$experienceSection = function (model) {
 							ctor: '::',
 							_0: A2(
 								_elm_lang$html$Html$li,
-								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$style(_rychan14$resume$App$noBullet),
+									_1: {ctor: '[]'}
+								},
 								{
 									ctor: '::',
 									_0: A2(

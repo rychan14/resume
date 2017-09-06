@@ -261,7 +261,7 @@ experienceSection model =
       [ text "Experience"
       ]
     , ul []
-      [ li []
+      [ li [ style noBullet ]
         [ span [ style [("font-weight" => "bold")] ] 
           [ text "Mirum Agency, " ]
         , span []
@@ -283,7 +283,7 @@ experienceSection model =
             ]
           ]
         ]
-      , li []
+      , li [ style noBullet ]
         [ span [ style [("font-weight" => "bold")] ] 
           [ text "BofI Federal Bank, " ]
         , span []
@@ -373,6 +373,10 @@ concatStyles styles =
 
 boldText =
   [ ("font-weight" => "bold")
+  ]
+
+noBullet =
+  [ ("list-style" => "none")
   ]
 
 bulletPoint =
