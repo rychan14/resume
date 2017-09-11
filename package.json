@@ -6,9 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "elm-reactor",
-    "start": "chokidar \"src/**/*.elm\" -c \"elm make src/App.elm --output src/index.js\"",
-    "//": "concurrently \"npm run build\" \"npm run css\"",
-    "/": "chokidar \"src/**/Styles.elm\" -c \"elm-css src/Styles/Stylesheets.elm"
+    "start": "chokidar \"src/**/*.elm\" -c \"npm run build\"",
+    "build": "elm make src/App.elm --output build/index.js"
   },
   "repository": {
     "type": "git",
@@ -21,11 +20,7 @@
   },
   "homepage": "https://github.com/rychan14/resume#readme",
   "devDependencies": {
-    "chokidar-cli": "^1.2.0",
-    "concurrently": "^3.5.0",
-    "elm": "^0.18.0"
+    "chokidar-cli": "^1.2.0"
   },
-  "dependencies": {
-    "elm-github-install": "^1.4.0"
-  }
+  "dependencies": {}
 }
